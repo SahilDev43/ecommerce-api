@@ -1,6 +1,8 @@
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from app.database import Base
 from datetime import datetime
+from pydantic import BaseModel, EmailStr
+
 
 class User(Base):
     __tablename__ = "users"
@@ -14,3 +16,9 @@ class User(Base):
     role = Column(String(100), default="CUSTOMER", nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+class UserResponse(Base):
+    id: int
+    first_name: str
+    last_name: str
+    email: EmailStr
