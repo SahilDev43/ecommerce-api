@@ -27,11 +27,11 @@ def register_user(db: Session, user: UserCreate):
 
     return user_repository.create_user(db, db_user)
 
-def login(db: Session, login_data: UserLogin):
+def login(db: Session, username: str, password: str):
 
-    user = user_repository.get_user_by_email(db, login_data.email)
+    user = user_repository.get_user_by_email(db, username)
 
-    if not user or not verify_password(login_data.password, user.hashed_password):
+    if not user or not verify_password(password, user.hashed_password):
         raise HTTPException(
             status_code=401,
             detail="Invalid email or password"
