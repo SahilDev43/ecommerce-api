@@ -1,3 +1,5 @@
+from typing import List
+
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate, UserResponse, Token, UserLogin
@@ -5,6 +7,7 @@ from app.services import user_service
 from app.dependencies.auth import get_current_user
 from app.models.user import User
 from fastapi.security import OAuth2PasswordRequestForm
+from app.dependencies.auth import require_admin
 
 from app.database import get_db
 
@@ -28,3 +31,10 @@ def login(
 def get_me(current_user: User = Depends(get_current_user)):
 
       return current_user
+
+@router.get("/users", response_model=List[UserResponse])
+def get_all_users(
+    admin: User = Depends(require_admin),
+    db: Session = Depends(get_db)
+):
+    return user_service.get_all_users(db)

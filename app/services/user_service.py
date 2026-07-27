@@ -49,3 +49,6 @@ def login(db: Session, username: str, password: str):
         access_token=access_token,
         token_type="bearer"
     )
+
+def get_all_users(db: Session):
+    return user_repository.get_all_users(db)
